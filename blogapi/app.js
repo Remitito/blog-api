@@ -15,7 +15,7 @@ var indexRouter = require('./routes/index');
 
 var app = express();
 
-const mongoDb = process.env.DB_URL
+const mongoDb = 'mongodb+srv://dbUser:dbPass@cluster0.1jvie.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
@@ -39,17 +39,20 @@ app.use('/', indexRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
+app.get("/log-out", (req, res) => {
+  req.logout();
+  res.redirect("/");
+});
 // error handler
-app.use(function(err, req, res, next) {
+//app.use(function(err, req, res, next) {
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  //res.locals.message = err.message;
+  //res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+  //res.status(err.status || 500);
+  //res.render('error');
+//});
 
 module.exports = app;
 
